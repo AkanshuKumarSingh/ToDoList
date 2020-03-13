@@ -2,7 +2,6 @@ package com.example.todolist;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,12 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,6 +71,7 @@ public class DataEntry extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(DataEntry.this, "Updated", Toast.LENGTH_SHORT).show();
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -82,9 +80,7 @@ public class DataEntry extends AppCompatActivity {
                         }
                     });
                 }
-                Intent intent = new Intent(DataEntry.this,MainActivity.class);
-                startActivity(intent);
-
+                finish();
             }
         });
     }
@@ -96,24 +92,22 @@ public class DataEntry extends AppCompatActivity {
                 if(titleText.getText() == null || thoughtText.getText() == null){
                     Toast.makeText(DataEntry.this,"Please Enter all Data",Toast.LENGTH_SHORT)
                             .show();
-                }else{
+                }else {
                     DocumentReference journalRef = db.collection("Notes")
                             .document(titleText.getText().toString());
                     String title = titleText.getText().toString();
                     String thought = thoughtText.getText().toString();
-                    Map<String,String> map = new HashMap<>();
-                    map.put("title",title);
-                    map.put("thought",thought);
+                    Map<String, String> map = new HashMap<>();
+                    map.put("title", title);
+                    map.put("thought", thought);
                     map.put("date", Calendar.getInstance().getTime().toString());
                     journalRef
                             .set(map)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(DataEntry.this,"Success",
+                                    Toast.makeText(DataEntry.this, "Success",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(DataEntry.this,MainActivity.class);
-                                    startActivity(intent);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -122,6 +116,7 @@ public class DataEntry extends AppCompatActivity {
                         }
                     });
                 }
+                finish();
             }
         });
     }
