@@ -48,11 +48,45 @@ public class DataEntry extends AppCompatActivity {
             String date = extras.get("date").toString();
             titleText.setText(title);
             thoughtText.setText(thought);
-            saveIt();
+            updateIt(title);
 
         }catch(Exception e){
         saveIt();
     }
+    }
+
+    public void updateIt(final String title){
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(titleText.getText() == null || thoughtText.getText() == null){
+                    Toast.makeText(DataEntry.this,"Please Enter all Data",Toast.LENGTH_SHORT)
+                            .show();
+
+                }else{
+                    DocumentReference journalRef = db.collection("Notes")
+                            .document(title);
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("title",titleText.getText().toString());
+                    map.put("thought",thoughtText.getText().toString());
+                    map.put("date",Calendar.getInstance().getTime().toString());
+                    journalRef.update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(DataEntry.this, "Updated", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("POPDOWN", "onFailure: ");
+                        }
+                    });
+                }
+                Intent intent = new Intent(DataEntry.this,MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     public void saveIt(){

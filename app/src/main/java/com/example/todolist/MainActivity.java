@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG,document.getId() + " => " + document.getData());
-                                titleList.add(document.getId());
+                                titleList.add((String)document.get("title"));
                                 thoughtList.add((String)document.get("thought"));
                                 dateList.add((String)document.get("date"));
                             }
