@@ -67,7 +67,7 @@ public class DataEntry extends AppCompatActivity {
                     DocumentReference journalRef = db.collection("Notes")
                             .document(title);
                     Map<String,Object> map = new HashMap<>();
-                    map.put("title",titleText.getText().toString());
+                    titleText.setEnabled(false);
                     map.put("thought",thoughtText.getText().toString());
                     map.put("date",Calendar.getInstance().getTime().toString());
                     journalRef.update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
